@@ -14,41 +14,41 @@ RUN apt-get update
 
 # Install Dependencies
     # Linux Tools
-        RUN apt-get install -yq wget curl git
+        RUN apt-get install -y -qq wget curl git
     # Required
-        RUN apt-get install -yq build-essential
-        RUN apt-get install -yq bison
-        RUN apt-get install -yq flex
-        RUN apt-get install -yq libgmp3-dev
-        RUN apt-get install -yq libmpc-dev
-        RUN apt-get install -yq libmpfr-dev
-        RUN apt-get install -yq texinfo
+        RUN apt-get install -y -qq build-essential
+        RUN apt-get install -y -qq bison
+        RUN apt-get install -y -qq flex
+        RUN apt-get install -y -qq libgmp3-dev
+        RUN apt-get install -y -qq libmpc-dev
+        RUN apt-get install -y -qq libmpfr-dev
+        RUN apt-get install -y -qq texinfo
     # Optional
-        RUN apt-get install -yq libcloog-isl-dev
-        RUN apt-get install -yq libisl-dev
+        RUN apt-get install -y -qq libcloog-isl-dev
+        RUN apt-get install -y -qq libisl-dev
 
-# Download the Source Code
-    RUN git clone git://sourceware.org/git/binutils-gdb.git /opt/work/binutils
-    RUN git clone git://gcc.gnu.org/git/gcc.git /opt/work/gcc
+# Import the Source Code
+    COPY ./res/binutils "${WORKSPACE}/binutils"
+    COPY ./res/gcc "${WORKSPACE}/gcc"
 
 # Build BinUtils
     RUN bash -c "(\
-        cd ${WORKSPACE}\
-        mkdir build-binutils\
-        cd build-binutils\
-        ../binutils/configure --target=$TARGET --prefix=\"$PREFIX\" --with-sysroot --disable-nls --disable-werror\
-        make\
-        make install\
+        cd ${WORKSPACE};\
+        mkdir build-binutils;\
+        cd build-binutils;\
+        ../binutils/configure --target=$TARGET --prefix=\"$PREFIX\" --with-sysroot --disable-nls --disable-werror;\
+        make;\
+        make install;\
     )"
 # Build GCC
     RUN bash -c "(\
-        cd ${WORKSPACE}\
-        which -- $TARGET-as || echo $TARGET-as is not in the PATH\
-        mkdir build-gcc\
-        cd build-gcc\
-        ../gcc-x.y.z/configure --target=$TARGET --prefix=\"$PREFIX\" --disable-nls --enable-languages=c,c++ --without-headers\
-        make all-gcc\
-        make all-target-libgcc\
-        make install-gcc\
-        make install-target-libgcc\
+        cd ${WORKSPACE};\
+        which -- $TARGET-as || echo $TARGET-as is not in the PATH;\
+        mkdir build-gcc;\
+        cd build-gcc;\
+        ../gcc/configure --target=$TARGET --prefix=\"$PREFIX\" --disable-nls --enable-languages=c,c++ --without-headers;\
+        make all-gcc;\
+        make all-target-libgcc;\
+        make install-gcc;\
+        make install-target-libgcc;\
     )"
