@@ -46,7 +46,7 @@ RUN apt-get update
         which -- $TARGET-as || echo $TARGET-as is not in the PATH;\
         mkdir build-gcc;\
         cd build-gcc;\
-        ../gcc/configure --target=$TARGET --prefix=\"$PREFIX\" --disable-nls --enable-languages=c,c++ --without-headers;\
+        ../gcc/configure --target=$TARGET --prefix=\"$PREFIX\" --disable-nls --enable-languages=c,c++ --without-headers --disable-multilib;\
         make all-gcc;\
         make all-target-libgcc;\
         make install-gcc;\
