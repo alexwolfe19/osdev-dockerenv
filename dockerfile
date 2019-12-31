@@ -2,12 +2,16 @@ FROM debian:latest
 
 WORKDIR /opt/work
 
+ARG TARGET
+
 # Setup ENV
 ENV WORKSPACE="/opt/work"
 ENV PREFIX="/opt/cross"
 ENV PATH="${PREFIX}/bin:$PATH"
 
 # export TARGET=i686-elf <-- must be specified when running the docker build command!
+
+RUN echo "Building target ${TARGET}"
 
 # Do update
 RUN apt-get update
@@ -23,9 +27,8 @@ RUN apt-get update
         RUN apt-get install -y -qq libmpc-dev
         RUN apt-get install -y -qq libmpfr-dev
         RUN apt-get install -y -qq texinfo
-    # Optional
-        RUN apt-get install -y -qq libcloog-isl-dev
-        RUN apt-get install -y -qq libisl-dev
+		RUN apt-get install -y -qq grub-pc-bin
+		RUN apt-get install -y -qq xorriso
 
 # Import the Source Code
     COPY ./res/binutils "${WORKSPACE}/binutils"

@@ -12,7 +12,7 @@ clean:
 	mkdir res
 
 i386: res/binutils res/gcc
-	docker build . --tag osdev-i686--build-arg TARGET="i686-elf" 
+	docker build . --tag osdev-i686 --build-arg TARGET="i686-elf" 
 
 arm: res/binutils res/gcc
 	docker build . --tag osdev-arm --build-arg TARGET="arm-none-eabi" 
