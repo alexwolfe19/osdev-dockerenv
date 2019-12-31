@@ -1,0 +1,16 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build_i386:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Get Deps
+      run: |
+        git clone git://sourceware.org/git/binutils-gdb.git ./res/binutils
+        git clone git://gcc.gnu.org/git/gcc.git ./res/gcc
+    - name: Build
+      run: |
+        make i386
